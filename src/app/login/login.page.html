@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <img class="logo" src="assets/easy.png" />
+  <ion-input label="Email" label-placement="floating" fill="outline" placeholder="" type="email"></ion-input>
+  <br>
+  <ion-input label="Senha" label-placement="floating" fill="outline" placeholder="" type="password"> <ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
+  <ion-button 
+    expand="block" 
+    style="display: block;" 
+    routerLink="/run"> Login
+  </ion-button>
+  
+  <h3>Não tem uma conta? <a routerLink="/cadastro">Clique aqui</a>
+</h3>
+</ion-content>
