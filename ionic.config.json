@@ -1,0 +1,7 @@
+{
+  "name": "EasyRun",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
