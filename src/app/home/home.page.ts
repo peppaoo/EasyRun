@@ -13,9 +13,9 @@ import { RouterLink } from '@angular/router';
     IonTitle, 
     IonContent, 
     IonButton,
-    RouterLink // PASSO 2: Adicione o RouterLink ao array de imports
+    RouterLink
   ],
-  standalone: true, // Adicionado para clareza (assumindo que estava faltando)
+  standalone: true, 
 })
 export class HomePage {
   constructor() {}

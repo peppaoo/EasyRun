@@ -1,0 +1,61 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>grupo</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+    <img src="/assets/easy.png"><h1 style="text-align: center; color: black;">EasyRun</h1>
+
+    <p>
+      Nosso projeto tem como objetivo facilitar a prática da corrida, oferecendo uma experiência simples, intuitiva e motivadora para os usuários. O aplicativo foi idealizado para auxiliar tanto iniciantes quanto corredores experientes, trazendo ferramentas que permitem marcar metas e acompanhar o desempenho de forma prática e sem complicações.
+    </p>
+    <p>
+      O grande diferencial do nosso app está no monitoramento em tempo real, fornecendo informações claras e objetivas, como pace, tempo decorrido e distância percorrida. Além disso, o usuário pode programar metas de distância ou tempo e receber notificações durante a corrida, o que garante maior controle sobre seu progresso e ajuda a manter o ritmo desejado.
+    </p>
+    <p style="margin-bottom: 0;" >
+      Assim, buscamos unir tecnologia e esporte para tornar a corrida mais acessível, organizada e estimulante, incentivando a superação de limites e a conquista de objetivos pessoais.
+    </p>
+    
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title style="text-align: center;">Sobre o grupo</ion-card-title>
+        <ion-card-subtitle style="text-align: center;">Somos um grupo formado por três amigos da turma de Análise e Desenvolvimento de Sistemas (ADS) em Bangu, no turno da manhã. Nosso trabalho em equipe nasceu da vontade de colocar em prática o que aprendemos em sala de aula, transformando ideias em soluções úteis e acessíveis.
+    Como projeto, desenvolvemos um aplicativo de corrida que tem como proposta facilitar o treino e motivar os usuários. O app permite definir metas personalizadas, acompanhar pace, tempo e distância em tempo real, além de enviar notificações durante a corrida. Dessa forma, buscamos unir tecnologia e esporte para oferecer uma experiência simples, organizada e motivadora, ajudando corredores de todos os níveis a alcançarem seus objetivos.</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-thumbnail slot="start">
+              <img src="/assets/Peppao.jpg" />
+            </ion-thumbnail>
+            <ion-label>Lucas Gomes 24 anos</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-thumbnail slot="start">
+              <img src="/assets/Tavin.jpg" />
+            </ion-thumbnail>
+            <ion-label>Gustavo Gonzaga 21 anos</ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-thumbnail slot="start">
+              <img src="/assets/Lucas.jpg" />
+            </ion-thumbnail>
+            <ion-label>Lucas Rafael 27 anos</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>  
+    <ion-button
+  expand="block"
+  style="display: block; margin: 20px auto; width: 200px;"
+  (click)="goHome()"
+>
+  Início
+</ion-button>
+ 
+
+</ion-content>

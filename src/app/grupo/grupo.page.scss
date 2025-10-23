@@ -1,0 +1,32 @@
+
+#container {
+  text-align: center;
+}
+
+ion-content {
+  --background: #14FF47; 
+}
+
+p {
+  color: black;
+  text-align: center;
+}
+
+#container strong {
+  font-size: 20px;
+  line-height: 26px;
+}
+
+#container p {
+  font-size: 16px;
+  line-height: 22px;
+  color: black; 
+  margin: 0;
+}
+ion-button{
+  --background: rgb(0, 0, 0);
+  --color: white;
+}
+#container a {
+  text-decoration: none;
+}

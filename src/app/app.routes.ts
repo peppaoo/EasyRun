@@ -22,4 +22,8 @@ export const routes: Routes = [
     path: 'run',
     loadComponent: () => import('./run/run.page').then( m => m.RunPage)
   },
+  {
+    path: 'grupo',
+    loadComponent: () => import('./grupo/grupo.page').then( m => m.GrupoPage)
+  },
 ];

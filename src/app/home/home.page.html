@@ -1,7 +1,4 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title></ion-title>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
@@ -10,8 +7,13 @@
   <h1>Bem-vindo ao EasyRun!</h1>
 
   <ion-button 
+   expand="block" 
+    style="display: block;" 
+    routerLink="/login"> Entrar
+  </ion-button>
+    <ion-button 
     expand="block" 
-    style="display: block; margin: 20px auto; width: 200px;" 
-    routerLink="/login"> Login
+    style="display: block;" 
+    routerLink="/grupo"> Quem Somos
   </ion-button>
 </ion-content>
