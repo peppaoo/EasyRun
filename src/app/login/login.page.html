@@ -1,22 +1,40 @@
-<ion-header [translucent]="true">
-</ion-header>
+<ion-header [translucent]="true"></ion-header>
 
 <ion-content [fullscreen]="true">
   <img class="logo" src="assets/easy.png" />
-  <ion-input label="Email" label-placement="floating" fill="outline" placeholder="" type="email"></ion-input>
+
+  <ion-input 
+    label="Email" 
+    label-placement="floating" 
+    fill="outline" 
+    type="email"
+    [(ngModel)]="email">
+  </ion-input>
+
   <br>
-  <ion-input label="Senha" label-placement="floating" fill="outline" placeholder="" type="password"> <ion-input-password-toggle slot="end"></ion-input-password-toggle></ion-input>
+
+  <ion-input 
+    label="Senha" 
+    label-placement="floating" 
+    fill="outline" 
+    type="password"
+    [(ngModel)]="senha">
+    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+  </ion-input>
+
   <ion-button 
     expand="block" 
-    style="display: block;" 
-    routerLink="/run"> Login
+    (click)="fazerLogin()"> 
+    Login
   </ion-button>
+
   <ion-button 
     expand="block" 
-    style="display: block;" 
-    routerLink="/home"> Voltar
+    routerLink="/home"> 
+    Voltar
   </ion-button>
   
-  <h3>Não tem uma conta? <a routerLink="/cadastro">Clique aqui</a>
-</h3>
+  <h3>
+    Não tem uma conta? <a routerLink="/cadastro">Clique aqui</a>
+  </h3>
 </ion-content>

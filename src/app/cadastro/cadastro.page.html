@@ -1,19 +1,14 @@
-<ion-header [translucent]="true">
-</ion-header>
+<ion-header [translucent]="true"></ion-header>
 
 <ion-content [fullscreen]="true">
-<img class="logo" src="assets/easy.png" />
-<ion-input label="Nome Completo" label-placement="floating" fill="outline" placeholder=""></ion-input>
-<br>
-<ion-input label="Email" label-placement="floating" fill="outline" placeholder="example@gmail.com" type="email"></ion-input>
-<br>
-<ion-input label="Data de nascimento" label-placement="floating" fill="outline" placeholder="" type="date"></ion-input>
-<br>
-<ion-input label="Celular" label-placement="floating" fill="outline" placeholder="(XX) XXXX-XXXX" maxlength="14" type="text"></ion-input>
-<br>
-<ion-input label="Senha" label-placement="floating" fill="outline" placeholder="" type="password" minlength="6" maxlength="12"></ion-input>
-<ion-button expand="block" 
-    style="display: block;"  (click)="voltarHome()">Voltar</ion-button>
+  <img class="logo" src="assets/easy.png" />
+  <br>
+  <ion-input label="Email" label-placement="floating" fill="outline"
+             [(ngModel)]="email" placeholder="example@gmail.com" type="email"></ion-input>
+  <br>
+  <ion-input label="Senha" label-placement="floating" fill="outline"
+             [(ngModel)]="senha" type="password" minlength="6" maxlength="12"></ion-input>
 
+  <ion-button expand="block" (click)="cadastrarUsuario()">Cadastrar</ion-button>
+  <ion-button expand="block" color="medium" (click)="voltarHome()">Voltar</ion-button>
 </ion-content>
-

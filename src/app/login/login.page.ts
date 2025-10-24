@@ -3,11 +3,20 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
-// 1. Importações do Ionic Standalone (Adicionando os componentes necessários)
-import { IonContent, IonHeader, IonInput, IonButton, IonInputPasswordToggle, NavController, LoadingController, AlertController } from '@ionic/angular/standalone';
+// Ionic Standalone Components
+import { 
+  IonContent, 
+  IonHeader, 
+  IonInput, 
+  IonButton, 
+  IonInputPasswordToggle, 
+  NavController, 
+  LoadingController, 
+  AlertController 
+} from '@ionic/angular/standalone';
 
-// 2. Importações do Firebase (SDK Modular)
-import { Auth, signInWithEmailAndPassword } from 'firebase/auth';
+// Firebase Auth
+import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -15,71 +24,77 @@ import { Auth, signInWithEmailAndPassword } from 'firebase/auth';
   styleUrls: ['./login.page.scss'],
   standalone: true,
   imports: [
-    IonContent, 
-    IonHeader, 
-    IonInput, 
-    IonButton, 
-    CommonModule, 
-    FormsModule,
+    IonContent,
+    IonHeader,
+    IonInput,
+    IonButton,
     IonInputPasswordToggle,
+    CommonModule,
+    FormsModule,
     RouterLink,
-  ]
+  ],
 })
 export class LoginPage implements OnInit {
 
-  // Variáveis para capturar os dados do formulário (ligadas via [(ngModel)] no HTML)
+  // Campos de entrada do formulário
   email: string = '';
   senha: string = '';
 
-  // 3. Injeção de Dependências (Usando inject() para Standalone Components)
-  private auth: Auth = inject(Auth);
+  // Injeção de dependências (usando a API inject)
+  private auth = inject(Auth);
   private navCtrl = inject(NavController);
   private loadingCtrl = inject(LoadingController);
   private alertCtrl = inject(AlertController);
 
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   /**
-   * Função principal para realizar o login com email e senha.
-   * Chamada pelo (click) do botão no template.
+   * Realiza o login com email e senha usando o Firebase Authentication.
    */
   async fazerLogin() {
     const loading = await this.loadingCtrl.create({
-      message: 'Autenticando...'
+      message: 'Autenticando...',
+      spinner: 'crescent'
     });
     await loading.present();
 
     try {
-      // 4. CHAMADA AO FIREBASE AUTH
-      // Tenta fazer o login com as credenciais fornecidas
-      await signInWithEmailAndPassword(this.auth, this.email, this.senha);
-      
-      await loading.dismiss();
-      
-      // 5. NAVEGAÇÃO
-      // Se for bem-sucedido, navega para a página '/home' e limpa o histórico de navegação (root)
-      this.navCtrl.navigateRoot('/home'); 
+      // Autenticação no Firebase
+      const userCredential = await signInWithEmailAndPassword(
+        this.auth,
+        this.email,
+        this.senha
+      );
 
+      await loading.dismiss();
+
+      // Mostra um alerta de sucesso
+      const successAlert = await this.alertCtrl.create({
+        header: 'Login realizado!',
+        message: `Bem-vindo(a), ${userCredential.user.email}!`,
+        buttons: ['OK'],
+      });
+      await successAlert.present();
+
+      // Redireciona para a tela principal
+      this.navCtrl.navigateRoot('/home');
     } catch (error: any) {
       await loading.dismiss();
-      
-      // 6. TRATAMENTO DE ERROS
-      // Exibe uma mensagem de erro amigável ao usuário
+
+      // Exibe erro amigável
       const alert = await this.alertCtrl.create({
         header: 'Erro no Login',
         message: this.formatarErro(error.code),
-        buttons: ['OK']
+        buttons: ['OK'],
       });
       await alert.present();
     }
   }
 
   /**
-   * Função auxiliar para traduzir códigos de erro do Firebase.
+   * Traduz os códigos de erro do Firebase para mensagens mais claras.
    */
   private formatarErro(errorCode: string): string {
     switch (errorCode) {
@@ -89,10 +104,12 @@ export class LoginPage implements OnInit {
         return 'Senha incorreta.';
       case 'auth/invalid-email':
         return 'Formato de e-mail inválido.';
+      case 'auth/missing-password':
+        return 'Informe a senha.';
       case 'auth/too-many-requests':
         return 'Muitas tentativas. Tente novamente mais tarde.';
       default:
-        return 'Erro desconhecido. Tente novamente.';
+        return 'Ocorreu um erro inesperado. Tente novamente.';
     }
   }
 }

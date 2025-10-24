@@ -4,8 +4,7 @@ import { RouteReuseStrategy, provideRouter } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 
 // Importações do Firebase SDK e AngularFire
-import { initializeApp } from 'firebase/app';
-import { provideFirebaseApp } from '@angular/fire/app'; // Função do AngularFire para inicialização
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app'; // Função do AngularFire para inicialização
 import { getAuth, provideAuth } from '@angular/fire/auth'; // Função do AngularFire para autenticação
 
 import { routes } from './app/app.routes';

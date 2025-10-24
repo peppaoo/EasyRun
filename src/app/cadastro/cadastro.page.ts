@@ -1,17 +1,101 @@
-import { Component, OnInit } from '@angular/core';
-import { IonContent, IonHeader,  IonInput, IonButton, } from '@ionic/angular/standalone';
-import { Router } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+// Ionic Components
+import { 
+  IonContent, 
+  IonHeader, 
+  IonInput, 
+  IonButton, 
+  NavController, 
+  LoadingController, 
+  AlertController 
+} from '@ionic/angular/standalone';
+
+// Firebase
+import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+
 @Component({
   selector: 'app-cadastro',
   templateUrl: './cadastro.page.html',
   styleUrls: ['./cadastro.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonInput, IonButton, ]
+  imports: [
+    IonContent,
+    IonHeader,
+    IonInput,
+    IonButton,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class CadastroPage {
-  constructor(private router: Router) {}
+
+  email: string = '';
+  senha: string = '';
+
+  private auth = inject(Auth);
+  private navCtrl = inject(NavController);
+  private loadingCtrl = inject(LoadingController);
+  private alertCtrl = inject(AlertController);
+
+  constructor() {}
+
+  async cadastrarUsuario() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Cadastrando...',
+      spinner: 'crescent'
+    });
+    await loading.present();
+
+    try {
+      // Cria o usuário no Firebase Authentication
+      await createUserWithEmailAndPassword(this.auth, this.email, this.senha);
+
+      await loading.dismiss();
+
+      // Alerta de sucesso
+      const successAlert = await this.alertCtrl.create({
+        header: 'Cadastro realizado!',
+        message: 'Usuário criado com sucesso.',
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            this.navCtrl.navigateRoot('/home');
+          }
+        }],
+      });
+
+      await successAlert.present();
+
+    } catch (error: any) {
+      await loading.dismiss();
+
+      const alert = await this.alertCtrl.create({
+        header: 'Erro no cadastro',
+        message: this.formatarErro(error.code),
+        buttons: ['OK'],
+      });
+
+      await alert.present();
+    }
+  }
+
+  private formatarErro(errorCode: string): string {
+    switch (errorCode) {
+      case 'auth/email-already-in-use':
+        return 'Este e-mail já está em uso.';
+      case 'auth/invalid-email':
+        return 'E-mail inválido.';
+      case 'auth/weak-password':
+        return 'A senha deve ter pelo menos 6 caracteres.';
+      default:
+        return 'Erro ao cadastrar. Tente novamente.';
+    }
+  }
 
   voltarHome() {
-    this.router.navigate(['/home']);
+    this.navCtrl.navigateRoot('/home');
   }
 }
