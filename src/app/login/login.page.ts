@@ -74,7 +74,7 @@ export class LoginPage implements OnInit {
       await successAlert.present();
 
       // Redireciona para a tela principal
-      this.navCtrl.navigateRoot('/home');
+      this.navCtrl.navigateRoot('/run');
     } catch (error: any) {
       await loading.dismiss();
 
