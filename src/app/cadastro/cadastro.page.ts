@@ -1,8 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-// Ionic Components
 import { 
   IonContent, 
   IonHeader, 
@@ -13,7 +11,6 @@ import {
   AlertController 
 } from '@ionic/angular/standalone';
 
-// Firebase
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 
 @Component({
@@ -50,11 +47,9 @@ export class CadastroPage {
     await loading.present();
 
     try {
-      // Cria o usuário no Firebase Authentication
       await createUserWithEmailAndPassword(this.auth, this.email, this.senha);
 
       await loading.dismiss();
-
       // Alerta de sucesso
       const successAlert = await this.alertCtrl.create({
         header: 'Cadastro realizado!',

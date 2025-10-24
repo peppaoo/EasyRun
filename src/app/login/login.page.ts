@@ -2,8 +2,6 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-
-// Ionic Standalone Components
 import { 
   IonContent, 
   IonHeader, 
@@ -15,7 +13,6 @@ import {
   AlertController 
 } from '@ionic/angular/standalone';
 
-// Firebase Auth
 import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 
 @Component({
@@ -36,11 +33,9 @@ import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 })
 export class LoginPage implements OnInit {
 
-  // Campos de entrada do formulário
   email: string = '';
   senha: string = '';
 
-  // Injeção de dependências (usando a API inject)
   private auth = inject(Auth);
   private navCtrl = inject(NavController);
   private loadingCtrl = inject(LoadingController);
@@ -93,10 +88,7 @@ export class LoginPage implements OnInit {
     }
   }
 
-  /**
-   * Traduz os códigos de erro do Firebase para mensagens mais claras.
-   */
-  private formatarErro(errorCode: string): string {
+    private formatarErro(errorCode: string): string {
     switch (errorCode) {
       case 'auth/user-not-found':
         return 'Usuário não encontrado. Verifique o e-mail.';
