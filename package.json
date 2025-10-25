@@ -24,6 +24,7 @@
     "@angular/platform-browser": "^18.2.8",
     "@angular/platform-browser-dynamic": "^18.2.8",
     "@angular/router": "^18.2.8",
+    "@capacitor-community/text-to-speech": "^6.1.0",
     "@capacitor/android": "^7.0.1",
     "@capacitor/app": "^7.0.1",
     "@capacitor/core": "^7.0.1",

@@ -13,6 +13,14 @@
 
   <div style="padding: 16px; text-align: center;">
     <!-- BOTÕES DE CONTROLE -->
+     <ion-item>
+  <ion-label position="stacked">Avisar a cada:</ion-label>
+  <ion-input type="number" [(ngModel)]="avisoDistancia"></ion-input>
+  <ion-select [(ngModel)]="unidadeAviso">
+    <ion-select-option value="m">Metros</ion-select-option>
+    <ion-select-option value="km">Quilômetros</ion-select-option>
+  </ion-select>
+</ion-item>
     <div *ngIf="!hasStarted">
       <ion-button expand="block" color="success" (click)="startRun()">
         <ion-icon name="play-outline" slot="start"></ion-icon>
