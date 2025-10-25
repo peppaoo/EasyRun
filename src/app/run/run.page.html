@@ -3,6 +3,13 @@
 
 <ion-content [fullscreen]="true">
   <div id="map" style="height: 70%;"></div>
+  <!-- Botão flutuante de centralizar -->
+<ion-fab vertical="bottom" horizontal="end" slot="fixed"  style="margin-bottom: 200px; margin-right: 320px;">
+  <ion-fab-button color="primary" (click)="centerMapOnUser()">
+    <ion-icon name="locate-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
 
   <div style="padding: 16px; text-align: center;">
     <!-- BOTÕES DE CONTROLE -->
@@ -10,6 +17,10 @@
       <ion-button expand="block" color="success" (click)="startRun()">
         <ion-icon name="play-outline" slot="start"></ion-icon>
         Começar corrida
+      </ion-button>
+      <ion-button expand="block" color="medium" (click)="goHome()">
+        <ion-icon name="home-outline" slot="start"></ion-icon>
+        Sair
       </ion-button>
     </div>
 
