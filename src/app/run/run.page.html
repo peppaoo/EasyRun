@@ -13,14 +13,26 @@
 
   <div style="padding: 16px; text-align: center;">
     <!-- BOTÕES DE CONTROLE -->
-     <ion-item>
-  <ion-label position="stacked">Avisar a cada:</ion-label>
-  <ion-input type="number" [(ngModel)]="avisoDistancia"></ion-input>
-  <ion-select [(ngModel)]="unidadeAviso">
-    <ion-select-option value="m">Metros</ion-select-option>
-    <ion-select-option value="km">Quilômetros</ion-select-option>
-  </ion-select>
-</ion-item>
+     <ion-card>
+  <ion-card-header>
+    <ion-card-title>Configuração de Aviso</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <ion-item>
+      <ion-label position="stacked">Avisar a cada</ion-label>
+      <ion-input
+        type="text"
+        placeholder="Ex: 400m ou 0.4km ou 4km"
+        [(ngModel)]="avisoTexto"
+        (ionChange)="atualizarAviso()"
+      ></ion-input>
+    </ion-item>
+  </ion-card-content>
+</ion-card>
+
+
+
     <div *ngIf="!hasStarted">
       <ion-button expand="block" color="success" (click)="startRun()">
         <ion-icon name="play-outline" slot="start"></ion-icon>

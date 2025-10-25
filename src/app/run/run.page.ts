@@ -1,7 +1,6 @@
 import { Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
@@ -34,10 +33,9 @@ export class RunPage implements AfterViewInit, OnDestroy {
   routePolyline: any;
   userMarker: any = null;
 
-  // ⚙️ Configuração de aviso
-  avisoDistancia = 1; // padrão: 1 km
-  unidadeAviso: 'km' | 'm' = 'km';
-  proximoAviso = 1; // próximo marco a ser falado (em km)
+  avisoDistancia = 1; // em km
+  avisoTexto = '1km'; // texto digitado pelo usuário
+  proximoAviso = 1;
 
   constructor(private router: Router) {}
 
@@ -49,7 +47,7 @@ export class RunPage implements AfterViewInit, OnDestroy {
     this.clearTracking();
   }
 
-  // 🔊 fala usando o alto-falante do celular
+  // 🔊 Fala (usada durante corrida)
   async falar(texto: string) {
     try {
       await TextToSpeech.speak({
@@ -57,14 +55,39 @@ export class RunPage implements AfterViewInit, OnDestroy {
         lang: 'pt-BR',
         rate: 1.0,
         pitch: 1.0,
-        volume: 1.0,
-        category: 'playback',
       });
     } catch (error) {
       console.error('Erro ao falar:', error);
     }
   }
 
+  // ⚙️ Lê o texto e converte pra km automaticamente
+  atualizarAviso() {
+    if (!this.avisoTexto) return;
+
+    const texto = this.avisoTexto.trim().toLowerCase();
+
+    if (texto.endsWith('m')) {
+      const valor = parseFloat(texto.replace('m', '').replace(',', '.'));
+      this.avisoDistancia = valor / 1000; // metros → km
+    } else if (texto.endsWith('km')) {
+      const valor = parseFloat(texto.replace('km', '').replace(',', '.'));
+      this.avisoDistancia = valor;
+    } else {
+      // Se não colocar unidade, assume km
+      const valor = parseFloat(texto.replace(',', '.'));
+      this.avisoDistancia = valor;
+    }
+
+    if (isNaN(this.avisoDistancia) || this.avisoDistancia <= 0) {
+      alert('⚠️ Digite uma distância válida. Ex: 400m ou 1.5km');
+      this.avisoDistancia = 1;
+    }
+
+    console.log(`⚙️ Avisar a cada ${this.avisoDistancia} km`);
+  }
+
+  // 🗺️ Inicializa o mapa
   initMap() {
     const mapEl = document.getElementById('map') as HTMLElement;
 
@@ -86,37 +109,22 @@ export class RunPage implements AfterViewInit, OnDestroy {
         this.userMarker = new google.maps.Marker({
           position: posicaoInicial,
           map: this.map,
-          title: 'Você está aqui 🏁',
           icon: {
             url: 'assets/boneco.png',
             scaledSize: new google.maps.Size(50, 50),
             anchor: new google.maps.Point(25, 25),
           },
+          title: 'Você está aqui 🏁',
         });
 
         this.routePolyline = new google.maps.Polyline({
-          path: this.pathCoords,
+          path: [],
           geodesic: true,
           strokeColor: '#007AFF',
           strokeOpacity: 1.0,
           strokeWeight: 5,
         });
-
         this.routePolyline.setMap(this.map);
-
-        // rastreamento inicial
-        this.watchId = navigator.geolocation.watchPosition(
-          (pos) => {
-            const lat = pos.coords.latitude;
-            const lng = pos.coords.longitude;
-            const currentPos = new google.maps.LatLng(lat, lng);
-
-            this.userMarker.setPosition(currentPos);
-            this.map.setCenter(currentPos);
-          },
-          (err) => console.error('Erro ao rastrear localização:', err),
-          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-        );
       },
       (err) => {
         console.error('Erro ao pegar localização inicial:', err);
@@ -128,46 +136,33 @@ export class RunPage implements AfterViewInit, OnDestroy {
 
   async centerMapOnUser() {
     try {
-      const position = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
+      const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
       const currentPos = new google.maps.LatLng(lat, lng);
 
-      if (this.map) {
-        this.map.setCenter(currentPos);
-        this.map.setZoom(19);
-      }
-
-      if (this.userMarker) {
-        this.userMarker.setPosition(currentPos);
-      } else {
-        this.userMarker = new google.maps.Marker({
-          position: currentPos,
-          map: this.map,
-          icon: {
-            url: 'assets/boneco.png',
-            scaledSize: new google.maps.Size(50, 50),
-            anchor: new google.maps.Point(25, 25),
-          },
-          title: 'Você está aqui 🏁',
-        });
-      }
+      this.map?.setCenter(currentPos);
+      this.map?.setZoom(19);
+      this.userMarker?.setPosition(currentPos);
     } catch (error) {
       console.error('Erro ao centralizar:', error);
-      alert('❌ Não foi possível centralizar. Verifique o GPS e tente novamente.');
     }
   }
 
+  // 🏃 Inicia corrida
   startRun() {
+    this.atualizarAviso(); // 👈 lê o valor digitado
+
     this.hasStarted = true;
     this.isPaused = false;
     this.tempo = 0;
     this.distancia = 0;
-    this.lastPosition = null;
     this.pathCoords = [];
     this.routePolyline.setPath(this.pathCoords);
-    this.proximoAviso = this.avisoDistancia / (this.unidadeAviso === 'm' ? 1000 : 1);
+    this.lastPosition = null;
+    this.proximoAviso = this.avisoDistancia;
 
+    // ⏱️ Timer
     this.timerInterval = setInterval(() => {
       if (!this.isPaused) {
         this.tempo++;
@@ -175,6 +170,7 @@ export class RunPage implements AfterViewInit, OnDestroy {
       }
     }, 1000);
 
+    // 📍 Rastreamento
     this.watchId = navigator.geolocation.watchPosition(
       (pos) => {
         if (this.isPaused) return;
@@ -183,43 +179,65 @@ export class RunPage implements AfterViewInit, OnDestroy {
         const lng = pos.coords.longitude;
         const currentPos = new google.maps.LatLng(lat, lng);
 
-        this.pathCoords.push(currentPos);
-        this.routePolyline.setPath(this.pathCoords);
-
         if (this.lastPosition) {
-          const delta = google.maps.geometry.spherical.computeDistanceBetween(
+          const delta = google.maps.geometry?.spherical?.computeDistanceBetween(
             this.lastPosition,
             currentPos
           );
-          this.distancia += delta / 1000;
+          if (delta && !isNaN(delta)) {
+            this.distancia += delta / 1000;
+          }
         }
 
-        this.lastPosition = currentPos;
-        this.map.setCenter(currentPos);
+        this.pathCoords.push(currentPos);
+        this.routePolyline.setPath(this.pathCoords);
         this.userMarker.setPosition(currentPos);
+        this.map.setCenter(currentPos);
+        this.lastPosition = currentPos;
 
         this.updateDisplays();
-        this.checkAviso(); // ✅ checa e fala
+        this.checkAviso();
       },
-      (err) => console.error(err),
-      { enableHighAccuracy: true }
+      (err) => console.error('Erro no watchPosition:', err),
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
   }
+isSpeaking = false; // adiciona no topo da classe (junto com as outras variáveis)
 
-  async checkAviso() {
-    if (this.distancia >= this.proximoAviso) {
-      const tempoFormatado = this.tempoDisplay.replace(/^0+/, '');
-      const paceFormatado = this.paceDisplay.replace(':', ' minutos e ') + ' por quilômetro';
+async checkAviso() {
+  // se já estiver falando, não repete
+  if (this.isSpeaking) return;
 
-      const texto = `Você completou ${this.proximoAviso.toFixed(2)} quilômetros.
-      Tempo total: ${tempoFormatado}.
-      Pace médio: ${paceFormatado}.`;
+  if (this.distancia >= this.proximoAviso) {
+    this.isSpeaking = true; // bloqueia novas falas temporariamente
 
-      await this.falar(texto);
+    const totalMin = Math.floor(this.tempo / 60);
+    const totalSeg = this.tempo % 60;
+    const tempoFalado =
+      `${totalMin} ${totalMin === 1 ? 'minuto' : 'minutos'} e ` +
+      `${totalSeg} ${totalSeg === 1 ? 'segundo' : 'segundos'}`;
 
-      this.proximoAviso += this.avisoDistancia / (this.unidadeAviso === 'm' ? 1000 : 1);
+    const paceFormatado =
+      this.paceDisplay.replace(':', ' minutos e ') + ' por quilômetro';
+
+    const texto = `Você completou ${this.proximoAviso.toFixed(
+      2
+    )} quilômetros. Tempo total: ${tempoFalado}. Pace médio: ${paceFormatado}.`;
+
+    try {
+      await this.falar(texto); // espera a fala terminar
+    } catch (err) {
+      console.error('Erro ao falar:', err);
     }
+
+    this.proximoAviso += this.avisoDistancia; // define próximo marco
+
+    // desbloqueia a fala depois de 3 segundos (pra evitar repetições)
+    setTimeout(() => {
+      this.isSpeaking = false;
+    }, 3000);
   }
+}
 
   pauseRun() {
     this.isPaused = true;
@@ -231,11 +249,17 @@ export class RunPage implements AfterViewInit, OnDestroy {
 
   stopRun() {
     this.clearTracking();
-    const textoFinal = `Corrida finalizada!
-    Distância total: ${this.distancia.toFixed(2)} quilômetros.
-    Tempo total: ${this.tempoDisplay.replace(':', ' minutos e ').replace(':', ' segundos')}.
-    Pace médio: ${this.paceDisplay.replace(':', ' minutos e ')} por quilômetro.`;
-    this.falar(textoFinal);
+
+    const distanciaFinal = this.distancia.toFixed(2);
+    const tempoFinal = this.tempoDisplay;
+    const paceFinal = this.paceDisplay;
+
+    alert(
+      `🏁 Corrida finalizada!\n\n` +
+      `Distância total: ${distanciaFinal} km\n` +
+      `Tempo total: ${tempoFinal}\n` +
+      `Pace médio: ${paceFinal} / km`
+    );
   }
 
   clearTracking() {
