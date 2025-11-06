@@ -45,9 +45,6 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {}
 
-  /**
-   * Realiza o login com email e senha usando o Firebase Authentication.
-   */
   async fazerLogin() {
     const loading = await this.loadingCtrl.create({
       message: 'Autenticando...',
@@ -56,7 +53,6 @@ export class LoginPage implements OnInit {
     await loading.present();
 
     try {
-      // Autenticação no Firebase
       const userCredential = await signInWithEmailAndPassword(
         this.auth,
         this.email,
@@ -65,7 +61,6 @@ export class LoginPage implements OnInit {
 
       await loading.dismiss();
 
-      // Mostra um alerta de sucesso
       const successAlert = await this.alertCtrl.create({
         header: 'Login realizado!',
         message: `Bem-vindo(a), ${userCredential.user.email}!`,
@@ -73,12 +68,12 @@ export class LoginPage implements OnInit {
       });
       await successAlert.present();
 
-      // Redireciona para a tela principal
-      this.navCtrl.navigateRoot('/run');
+      // 👉 redireciona para a home logada
+      this.navCtrl.navigateRoot('/homelogado');
+
     } catch (error: any) {
       await loading.dismiss();
 
-      // Exibe erro amigável
       const alert = await this.alertCtrl.create({
         header: 'Erro no Login',
         message: this.formatarErro(error.code),
@@ -88,7 +83,7 @@ export class LoginPage implements OnInit {
     }
   }
 
-    private formatarErro(errorCode: string): string {
+  private formatarErro(errorCode: string): string {
     switch (errorCode) {
       case 'auth/user-not-found':
         return 'Usuário não encontrado. Verifique o e-mail.';

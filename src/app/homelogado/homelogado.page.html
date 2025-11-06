@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <img class="logo" src="assets/easy.png" />
+  <h1 class="slogan">"Por que correr com a gente é mais fácil."</h1>
+  <h1>Bem-vindo(a) de volta ao EasyRun!</h1>
+
+  <ion-button 
+    expand="block" 
+    style="display: block;" 
+    (click)="goRun()">Correr
+  </ion-button>
+
+  <ion-button 
+    expand="block" 
+    style="display: block;" 
+    (click)="goHistory()">Histórico
+  </ion-button>
+
+  <ion-button 
+    expand="block" 
+    color="medium" 
+    style="display: block;" 
+    (click)="logout()">Sair
+  </ion-button>
+</ion-content>

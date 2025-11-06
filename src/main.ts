@@ -5,12 +5,11 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalo
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import environment from './environments/environment';
-
-
 
 if (environment.production) {
   enableProdMode();
@@ -23,7 +22,8 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     importProvidersFrom(
       provideFirebaseApp(() => initializeApp(environment.firebase)),
-      provideAuth(() => getAuth())
+      provideAuth(() => getAuth()),
+      provideFirestore(() => getFirestore()) 
     ),
   ],
 }).catch((err) => console.error(err));

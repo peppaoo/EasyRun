@@ -26,4 +26,10 @@ export const routes: Routes = [
     path: 'grupo',
     loadComponent: () => import('./grupo/grupo.page').then( m => m.GrupoPage)
   },
+{
+  path: 'homelogado',
+  loadComponent: () => import('./homelogado/homelogado.page').then(m => m.HomeLogadoPage),
+},
+
+
 ];
