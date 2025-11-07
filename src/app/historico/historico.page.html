@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- volta para /homelogado -->
+      <ion-back-button defaultHref="/homelogado"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Histórico</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="recarregar()">
+        <ion-icon name="refresh"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<!-- IonContent já rola por padrão -->
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="recarregar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ng-container *ngIf="visiveis.length; else vazio">
+    <ion-list lines="none">
+      <ion-card *ngFor="let c of visiveis">
+        <ion-card-header>
+          <ion-card-title>🏁 {{ dataStr(c) }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <div><b>📏 Distância:</b> {{ (c.distancia || 0) | number:'1.2-2' }} km</div>
+          <div><b>⏱ Tempo:</b> {{ durStr(c.duracao) }}</div>
+          <div><b>🐢 Pace:</b> {{ paceStr(c.ritmo) }}</div>
+        </ion-card-content>
+      </ion-card>
+    </ion-list>
+
+    <!-- Infinite scroll -->
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Carregando...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ng-container>
+
+  <ng-template #vazio>
+    <p class="ion-text-center" style="opacity:.7; margin-top:24px">
+      Nenhuma corrida registrada ainda.
+    </p>
+  </ng-template>
+</ion-content>

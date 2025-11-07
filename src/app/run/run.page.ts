@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
 import { HistoricoService } from '../historico.service';
+import { RouterLink } from '@angular/router';
 
 
 declare var google: any;
@@ -15,7 +16,7 @@ declare var google: any;
   templateUrl: './run.page.html',
   styleUrls: ['./run.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule, FormsModule],
+  imports: [CommonModule, IonicModule, FormsModule, RouterLink],
 })
 export class RunPage implements AfterViewInit, OnDestroy {
   map: any;
@@ -313,7 +314,9 @@ async checkAviso() {
   }
 
   goHome() {
-    this.clearTracking();
-    this.router.navigate(['/home']);
-  }
+  // Para o rastreamento e volta pra tela principal logada
+  this.clearTracking();
+  this.router.navigate(['/homelogado']);
+}
+
 }

@@ -30,6 +30,13 @@ export const routes: Routes = [
   path: 'homelogado',
   loadComponent: () => import('./homelogado/homelogado.page').then(m => m.HomeLogadoPage),
 },
+  {
+  path: 'historico',
+  loadComponent: () =>
+    import('./historico/historico.page').then(m => m.HistoricoPage),
+},
+
+
 
 
 ];

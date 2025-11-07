@@ -3,22 +3,19 @@
 
 <ion-content [fullscreen]="true">
   <img class="logo" src="assets/easy.png" />
-  <h1 class="slogan">"Por que correr com a gente é mais fácil."</h1>
-  <h1>Bem-vindo(a) de volta ao EasyRun!</h1>
+  <h1>"Por que correr com a gente é mais fácil."</h1>
+  <h1>Bem-vindo ao EasyRun!</h1>
 
-  <ion-button 
-    expand="block" 
-    style="display: block;" 
-    (click)="goRun()">Correr
+  <ion-button expand="block"  (click)="goRun()">
+    Correr
   </ion-button>
 
-  <ion-button expand="block" fill="outline" (click)="mostrarHistorico()">Histórico</ion-button>
+  <ion-button expand="block" class="btn-outline" routerLink="/historico">
+  HISTÓRICO
+</ion-button>
 
 
-  <ion-button 
-    expand="block" 
-    color="medium" 
-    style="display: block;" 
-    (click)="logout()">Sair
+  <ion-button expand="block"(click)="logout()">
+    Sair
   </ion-button>
 </ion-content>

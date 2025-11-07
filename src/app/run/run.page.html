@@ -34,14 +34,15 @@
 
 
     <div *ngIf="!hasStarted">
-      <ion-button expand="block" color="success" (click)="startRun()">
-        <ion-icon name="play-outline" slot="start"></ion-icon>
+      <ion-button expand="block" (click)="startRun()">
         Começar corrida
       </ion-button>
-      <ion-button expand="block" color="medium" (click)="goHome()">
-        <ion-icon name="home-outline" slot="start"></ion-icon>
-        Sair
-      </ion-button>
+      <ion-button expand="block" routerLink="/historico">Histórico</ion-button>
+     <ion-button expand="block" (click)="goHome()">
+  Voltar
+</ion-button>
+
+
     </div>
 
     <div *ngIf="hasStarted">
