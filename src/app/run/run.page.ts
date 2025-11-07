@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Geolocation } from '@capacitor/geolocation';
 import { TextToSpeech } from '@capacitor-community/text-to-speech';
+import { HistoricoService } from '../historico.service';
+
 
 declare var google: any;
 
@@ -37,7 +39,9 @@ export class RunPage implements AfterViewInit, OnDestroy {
   avisoTexto = '1km'; // texto digitado pelo usuário
   proximoAviso = 1;
 
-  constructor(private router: Router) {}
+  
+  constructor(private router: Router, private historico: HistoricoService)
+   {}
 
   ngAfterViewInit() {
     this.initMap();
@@ -247,13 +251,34 @@ async checkAviso() {
     this.isPaused = false;
   }
 
-  stopRun() {
-    this.clearTracking();
+  async stopRun() {
+  this.clearTracking();
 
-    const distanciaFinal = this.distancia.toFixed(2);
-    const tempoFinal = this.tempoDisplay;
-    const paceFinal = this.paceDisplay;
+  const distanciaFinal = this.distancia.toFixed(2);
+  const tempoFinal = this.tempoDisplay;
+  const paceFinal = this.paceDisplay;
 
+  // Converte pace “mm:ss” em segundos/km
+  const [min, sec] = paceFinal.split(':').map((n) => parseInt(n) || 0);
+  const ritmo = min * 60 + sec;
+
+  const agora = new Date();
+  const duracaoSeg = this.tempo;
+
+  try {
+    await this.historico.salvarCorrida({
+      distancia: parseFloat(distanciaFinal),
+      duracao: duracaoSeg,
+      ritmo,
+      inicio: new Date(agora.getTime() - duracaoSeg * 1000),
+      fim: agora,
+    });
+  } catch (err) {
+    console.error('Erro ao salvar corrida:', err);
+    alert('⚠️ Corrida finalizada, mas não foi possível salvar no histórico.');
+  }
+
+  this.router.navigate(['/run']);
     alert(
       `🏁 Corrida finalizada!\n\n` +
       `Distância total: ${distanciaFinal} km\n` +
