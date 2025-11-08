@@ -26,7 +26,7 @@ import { HistoricoService } from '../historico.service';
 })
 export class HistoricoPage {
   corridas: any[] = [];
-  // controle do infinite scroll
+
   pageSize = 10;
   shown = 0;
 
@@ -41,7 +41,7 @@ export class HistoricoPage {
 
   async recarregar(ev?: any) {
     try {
-      // carrega bastante e deixa o scroll cuidar do resto
+
       this.corridas = await this.historico.listarUltimasCorridas(200);
       this.shown = Math.min(this.pageSize, this.corridas.length);
     } catch (e: any) {
@@ -56,13 +56,12 @@ export class HistoricoPage {
     }
   }
 
-  // lista “visível” atual
   get visiveis() {
     return this.corridas.slice(0, this.shown);
   }
 
   loadMore(ev: any) {
-    // simula carregamento
+
     setTimeout(() => {
       this.shown = Math.min(this.shown + this.pageSize, this.corridas.length);
       ev.target.complete();
