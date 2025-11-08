@@ -1,7 +1,6 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <!-- volta para /homelogado -->
       <ion-back-button defaultHref="/homelogado"></ion-back-button>
     </ion-buttons>
     <ion-title>Histórico</ion-title>
@@ -13,7 +12,6 @@
   </ion-toolbar>
 </ion-header>
 
-<!-- IonContent já rola por padrão -->
 <ion-content [fullscreen]="true" class="ion-padding">
   <ion-refresher slot="fixed" (ionRefresh)="recarregar($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -33,7 +31,6 @@
       </ion-card>
     </ion-list>
 
-    <!-- Infinite scroll -->
     <ion-infinite-scroll (ionInfinite)="loadMore($event)">
       <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Carregando...">
       </ion-infinite-scroll-content>
