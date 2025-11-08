@@ -15,7 +15,7 @@ import { Auth } from '@angular/fire/auth';
   imports: [
     CommonModule,
     IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonGrid, IonRow, IonCol,
-    RouterLink, // ✅ necessário se usar routerLink no HTML
+    RouterLink,
   ],
 })
 export class HomeLogadoPage {
@@ -23,7 +23,7 @@ export class HomeLogadoPage {
 
   goRun() { this.router.navigateByUrl('/run'); }
 
-  // ✅ navega para a página /historico
+
   goHistorico() { this.router.navigateByUrl('/historico'); }
 
   async logout() {
