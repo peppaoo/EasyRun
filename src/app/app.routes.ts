@@ -35,6 +35,11 @@ export const routes: Routes = [
   loadComponent: () =>
     import('./historico/historico.page').then(m => m.HistoricoPage),
 },
+   {
+    path: 'altersenha',
+    loadComponent: () => import('./altersenha/altersenha.page').then(m => m.AlterarSenhaPage)
+  },
+
 
 
 

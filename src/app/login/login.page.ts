@@ -68,7 +68,6 @@ export class LoginPage implements OnInit {
       });
       await successAlert.present();
 
-      // 👉 redireciona para a home logada
       this.navCtrl.navigateRoot('/homelogado');
 
     } catch (error: any) {
@@ -83,20 +82,22 @@ export class LoginPage implements OnInit {
     }
   }
 
-  private formatarErro(errorCode: string): string {
-    switch (errorCode) {
-      case 'auth/user-not-found':
-        return 'Usuário não encontrado. Verifique o e-mail.';
-      case 'auth/wrong-password':
-        return 'Senha incorreta.';
-      case 'auth/invalid-email':
-        return 'Formato de e-mail inválido.';
-      case 'auth/missing-password':
-        return 'Informe a senha.';
-      case 'auth/too-many-requests':
-        return 'Muitas tentativas. Tente novamente mais tarde.';
-      default:
-        return 'Ocorreu um erro inesperado. Tente novamente.';
-    }
+ private formatarErro(errorCode: string): string {
+  switch (errorCode) {
+    case 'auth/user-not-found':
+      return 'Usuário não encontrado. Verifique o e-mail.';
+    case 'auth/wrong-password':
+    case 'auth/invalid-credential':
+    case 'auth/invalid-login-credentials':
+      return 'Senha incorreta.';
+    case 'auth/invalid-email':
+      return 'Formato de e-mail inválido.';
+    case 'auth/missing-password':
+      return 'Informe a senha.';
+    case 'auth/too-many-requests':
+      return 'Muitas tentativas. Tente novamente mais tarde.';
+    default:
+      return 'Erro ao fazer login. Verifique as credenciais.';
   }
+}
 }

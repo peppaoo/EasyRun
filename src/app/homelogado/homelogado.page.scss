@@ -1,15 +1,13 @@
-/* Fundo verde da tela */
+
 ion-content {
   --background: #14FF47;
 }
 
-/* Toolbar (opcional) */
 ion-header, ion-toolbar, ion-title {
   --background: transparent;
   --color: #000;
 }
 
-/* Logo centralizada e responsiva */
 .logo {
   display: block;
   margin: 60px auto 12px;
@@ -18,7 +16,6 @@ ion-header, ion-toolbar, ion-title {
   height: auto;
 }
 
-/* Títulos */
 .slogan {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
@@ -34,7 +31,6 @@ h1 {
   margin: 6px 0 18px;
 }
 
-/* Botões padrão pretos com texto branco */
 ion-button {
   --background: #000;
   --color: #fff;
@@ -42,10 +38,9 @@ ion-button {
   margin-top: 8px;
 }
 
-/* Container antigo (se ainda usar em outra página) */
 #container {
   text-align: center;
-  position: relative; /* evita sobrepor com absolute */
+  position: relative; 
   left: 0;
   right: 0;
   margin-top: 12px;

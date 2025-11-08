@@ -1,0 +1,72 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Alterar Senha</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <img class="logo" src="assets/easy.png" />
+
+  <ion-input
+    label="Email"
+    label-placement="floating"
+    fill="outline"
+    type="email"
+    [value]="email"
+    readonly>
+  </ion-input>
+
+  <br>
+  <ion-input
+    *ngIf="isEmailPassword"
+    label="Senha atual"
+    label-placement="floating"
+    fill="outline"
+    type="password"
+    [(ngModel)]="currentPassword">
+    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+  </ion-input>
+
+  <br *ngIf="isEmailPassword">
+
+  <ion-input
+    label="Nova senha"
+    label-placement="floating"
+    fill="outline"
+    type="password"
+    [(ngModel)]="newPassword">
+    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+  </ion-input>
+
+  <br>
+
+  <ion-input
+    label="Confirmar nova senha"
+    label-placement="floating"
+    fill="outline"
+    type="password"
+    [(ngModel)]="confirmPassword">
+    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+  </ion-input>
+
+  <br>
+
+  <ion-button expand="block" (click)="alterarSenha()" [disabled]="loading">
+    Alterar senha
+  </ion-button>
+
+  <ion-button expand="block" (click)="voltar()">
+  Voltar
+</ion-button>
+<ion-button expand="block" color="danger" (click)="excluirConta()" [disabled]="loading">
+  Excluir conta
+</ion-button>
+  <div class="feedback" *ngIf="message || error">
+    <ion-note color="success" *ngIf="message">{{ message }}</ion-note>
+    <ion-note color="danger" *ngIf="error">{{ error }}</ion-note>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <ion-spinner name="dots"></ion-spinner>
+  </div>
+</ion-content>
