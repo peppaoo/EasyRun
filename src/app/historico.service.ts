@@ -44,7 +44,6 @@ export class HistoricoService {
     await addDoc(this.collRef(), payload);
   }
 
-  /** Lista as últimas corridas do usuário (sem exigir índice) */
   async listarUltimasCorridas(limitCount = 5): Promise<any[]> {
   const user = this.auth.currentUser;
   if (!user) throw new Error('Usuário não autenticado');
