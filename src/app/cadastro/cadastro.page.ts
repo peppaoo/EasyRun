@@ -50,7 +50,6 @@ export class CadastroPage {
       await createUserWithEmailAndPassword(this.auth, this.email, this.senha);
 
       await loading.dismiss();
-      // Alerta de sucesso
       const successAlert = await this.alertCtrl.create({
         header: 'Cadastro realizado!',
         message: 'Usuário criado com sucesso.',
