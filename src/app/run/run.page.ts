@@ -36,8 +36,8 @@ export class RunPage implements AfterViewInit, OnDestroy {
   routePolyline: any;
   userMarker: any = null;
 
-  avisoDistancia = 1; // em km
-  avisoTexto = '1km'; // texto digitado pelo usuário
+  avisoDistancia = 1; 
+  avisoTexto = '1km'; 
   proximoAviso = 1;
 
   
@@ -52,7 +52,6 @@ export class RunPage implements AfterViewInit, OnDestroy {
     this.clearTracking();
   }
 
-  // 🔊 Fala (usada durante corrida)
   async falar(texto: string) {
     try {
       await TextToSpeech.speak({
@@ -66,7 +65,6 @@ export class RunPage implements AfterViewInit, OnDestroy {
     }
   }
 
-  // ⚙️ Lê o texto e converte pra km automaticamente
   atualizarAviso() {
     if (!this.avisoTexto) return;
 
@@ -74,12 +72,12 @@ export class RunPage implements AfterViewInit, OnDestroy {
 
     if (texto.endsWith('m')) {
       const valor = parseFloat(texto.replace('m', '').replace(',', '.'));
-      this.avisoDistancia = valor / 1000; // metros → km
+      this.avisoDistancia = valor / 1000; 
     } else if (texto.endsWith('km')) {
       const valor = parseFloat(texto.replace('km', '').replace(',', '.'));
       this.avisoDistancia = valor;
     } else {
-      // Se não colocar unidade, assume km
+ 
       const valor = parseFloat(texto.replace(',', '.'));
       this.avisoDistancia = valor;
     }
@@ -92,7 +90,6 @@ export class RunPage implements AfterViewInit, OnDestroy {
     console.log(`⚙️ Avisar a cada ${this.avisoDistancia} km`);
   }
 
-  // 🗺️ Inicializa o mapa
   initMap() {
     const mapEl = document.getElementById('map') as HTMLElement;
 
@@ -154,9 +151,8 @@ export class RunPage implements AfterViewInit, OnDestroy {
     }
   }
 
-  // 🏃 Inicia corrida
   startRun() {
-    this.atualizarAviso(); // 👈 lê o valor digitado
+    this.atualizarAviso(); 
 
     this.hasStarted = true;
     this.isPaused = false;
@@ -167,7 +163,7 @@ export class RunPage implements AfterViewInit, OnDestroy {
     this.lastPosition = null;
     this.proximoAviso = this.avisoDistancia;
 
-    // ⏱️ Timer
+
     this.timerInterval = setInterval(() => {
       if (!this.isPaused) {
         this.tempo++;
@@ -175,7 +171,6 @@ export class RunPage implements AfterViewInit, OnDestroy {
       }
     }, 1000);
 
-    // 📍 Rastreamento
     this.watchId = navigator.geolocation.watchPosition(
       (pos) => {
         if (this.isPaused) return;
@@ -207,14 +202,14 @@ export class RunPage implements AfterViewInit, OnDestroy {
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
   }
-isSpeaking = false; // adiciona no topo da classe (junto com as outras variáveis)
+isSpeaking = false; 
 
 async checkAviso() {
-  // se já estiver falando, não repete
+
   if (this.isSpeaking) return;
 
   if (this.distancia >= this.proximoAviso) {
-    this.isSpeaking = true; // bloqueia novas falas temporariamente
+    this.isSpeaking = true; 
 
     const totalMin = Math.floor(this.tempo / 60);
     const totalSeg = this.tempo % 60;
@@ -230,14 +225,14 @@ async checkAviso() {
     )} quilômetros. Tempo total: ${tempoFalado}. Pace médio: ${paceFormatado}.`;
 
     try {
-      await this.falar(texto); // espera a fala terminar
+      await this.falar(texto); 
     } catch (err) {
       console.error('Erro ao falar:', err);
     }
 
-    this.proximoAviso += this.avisoDistancia; // define próximo marco
+    this.proximoAviso += this.avisoDistancia; 
 
-    // desbloqueia a fala depois de 3 segundos (pra evitar repetições)
+    
     setTimeout(() => {
       this.isSpeaking = false;
     }, 3000);
@@ -259,7 +254,6 @@ async checkAviso() {
   const tempoFinal = this.tempoDisplay;
   const paceFinal = this.paceDisplay;
 
-  // Converte pace “mm:ss” em segundos/km
   const [min, sec] = paceFinal.split(':').map((n) => parseInt(n) || 0);
   const ritmo = min * 60 + sec;
 
@@ -314,7 +308,7 @@ async checkAviso() {
   }
 
   goHome() {
-  // Para o rastreamento e volta pra tela principal logada
+
   this.clearTracking();
   this.router.navigate(['/homelogado']);
 }
