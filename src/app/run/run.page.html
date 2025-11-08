@@ -3,7 +3,7 @@
 
 <ion-content [fullscreen]="true">
   <div id="map" style="height: 70%;"></div>
-  <!-- Botão flutuante de centralizar -->
+
 <ion-fab vertical="bottom" horizontal="end" slot="fixed"  style="margin-bottom: 200px; margin-right: 320px;">
   <ion-fab-button color="primary" (click)="centerMapOnUser()">
     <ion-icon name="locate-outline"></ion-icon>
@@ -12,7 +12,7 @@
 
 
   <div style="padding: 16px; text-align: center;">
-    <!-- BOTÕES DE CONTROLE -->
+
      <ion-card>
   <ion-card-header>
     <ion-card-title>Configuração de Aviso</ion-card-title>
@@ -69,7 +69,6 @@
       </div>
     </div>
 
-    <!-- DADOS DA CORRIDA -->
     <div *ngIf="hasStarted" style="margin-top: 20px;">
       <h2>🏃 Corrida em andamento</h2>
       <p><strong>Tempo:</strong> {{ tempoDisplay }}</p>
